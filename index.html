@@ -1,3 +1,4 @@
+Yahn Website 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,325 +9,616 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700&display=swap" rel="stylesheet"/>
   <style>
-    css = '''/*
- * ═══════════════════════════════════════════════════════
- *  YAHN KIZILBASH — LIGHT THEME TRANSFORMATION LAYER
- *  Drop this <style> block BEFORE the closing </style>
- *  in both index.html and doingmybit.html.
- *  It overrides the dark palette while keeping every
- *  existing layout, typography, and motion rule intact.
- * ═══════════════════════════════════════════════════════
- */
+    :root {
+      --bg:       #080807;
+      --bg1:      #0E0E0C;
+      --bg2:      #131310;
+      --bg3:      #1A1A16;
+      --gold:     #BF9B46;
+      --gold-lt:  #D4AF5A;
+      --gold-dim: rgba(191,155,70,0.18);
+      --cream:    #EDE8DC;
+      --warm:     #C8C2B0;
+      --mid:      #7A7568;
+      --faint:    #2E2D27;
+      --line:     rgba(191,155,70,0.14);
+    }
 
-/* ─── 1. PALETTE ─── */
-:root {
-  /* Backgrounds — warm ivory/parchment scale */
-  --bg:        #F6F3EE;   /* was #080807  main surface        */
-  --bg1:       #EFECE5;   /* was #0E0E0C  subtle offset       */
-  --bg2:       #E7E3D9;   /* was #131310  hover / card        */
-  --bg3:       #DDD8CE;   /* was #1A1A16  deeper inset        */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
 
-  /* Gold — darkened so it reads on light */
-  --gold:      #8B6A2C;   /* was #BF9B46  primary accent      */
-  --gold-lt:   #A6812E;   /* was #D4AF5A  hover accent        */
-  --gold-dim:  rgba(139,106,44,0.10); /* was rgba(191,155,70,0.18) */
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 180px;
+    }
 
-  /* Text */
-  --cream:     #1C1A16;   /* was #EDE8DC  → now near-black    */
-  --warm:      #4B4740;   /* was #C8C2B0  → now warm charcoal */
-  --mid:       #8A847A;   /* was #7A7568  same relative mid   */
-  --faint:     #D4CEC4;   /* was #2E2D27  → now light rule    */
-  --line:      rgba(139,106,44,0.16);  /* gold hairline       */
-}
+    /* ── CURSOR ── */
+    #cur {
+      position: fixed; width: 6px; height: 6px;
+      background: var(--gold); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform .12s ease;
+    }
+    #cur-ring {
+      position: fixed; width: 38px; height: 38px;
+      border: 1px solid rgba(191,155,70,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+    }
 
-/* ─── 2. BODY & GRAIN ─── */
-body {
-  background: var(--bg);
-  color: var(--cream);
-}
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 76px; padding: 0 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background .6s, border-color .6s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(8,8,7,0.92);
+      backdrop-filter: blur(24px);
+      border-color: var(--line);
+    }
+    .nav-logo { display: flex; align-items: center; }
+    .nav-logo img { height: 34px; filter: none; opacity: 0.85; }
+    .nav-links { display: flex; gap: 48px; list-style: none; }
+    .nav-links a {
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 3.5px; text-transform: uppercase;
+      color: var(--mid); text-decoration: none;
+      transition: color .3s;
+      position: relative; padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      height: 1px; width: 0; background: var(--gold);
+      transition: width .35s ease;
+    }
+    .nav-links a:hover { color: var(--cream); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-pill {
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+      border: 1px solid var(--gold); color: var(--gold);
+      padding: 10px 22px; text-decoration: none;
+      transition: background .3s, color .3s;
+    }
+    .nav-pill:hover { background: var(--gold); color: var(--bg); }
 
-/* lighten grain opacity slightly on white bg */
-body::before { opacity: 0.025; }
+    /* ── HERO ── */
+    .hero {
+      position: relative; height: 100vh; min-height: 720px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
 
-/* ─── 3. NAV ─── */
-nav.scrolled {
-  background: rgba(246,243,238,0.93);
-  backdrop-filter: blur(24px);
-}
-/* logo: remove invert filter (dark logo on light bg) */
-.nav-logo img {
-  filter: none;
-  opacity: 0.82;
-}
+    /* photo side */
+    .hero-img-wrap {
+      position: relative; overflow: hidden;
+      order: 2;
+    }
+    .hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: 50% 12%;
+      display: block;
+      filter: grayscale(15%) contrast(1.08) brightness(0.88);
+      transform: scale(1.04);
+      transition: transform 10s ease;
+    }
+    .hero:hover .hero-img { transform: scale(1); }
+    .hero-img-overlay {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to right, var(--bg) 0%, transparent 35%),
+        linear-gradient(to top, var(--bg) 0%, transparent 22%),
+        linear-gradient(to bottom, var(--bg) 0%, transparent 10%);
+    }
 
-/* ─── 4. HERO ─── */
-/* content side stays bg-coloured (no change needed) */
+    /* content side */
+    .hero-content {
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 72px 88px 64px;
+      position: relative; z-index: 3; order: 1;
+    }
 
-/* The large gradient overlays on the photo side need to
-   reference the new --bg value — override them here: */
-.hero-img-overlay {
-  background:
-    linear-gradient(to right,  var(--bg) 0%, transparent 35%),
-    linear-gradient(to top,    var(--bg) 0%, transparent 22%),
-    linear-gradient(to bottom, var(--bg) 0%, transparent 10%);
-}
+    /* vertical label */
+    .hero-vert {
+      position: absolute; left: 24px; bottom: 40%;
+      writing-mode: vertical-rl; transform: rotate(180deg);
+      font-family: 'Jost', sans-serif; font-size: 9px;
+      letter-spacing: 4px; text-transform: uppercase; color: var(--mid);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .hero-vert-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+    }
 
-/* hero image: warmer treatment on light bg */
-.hero-img {
-  filter: sepia(6%) contrast(1.05) brightness(1.0);
-}
+    .hero-kicker {
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 5px; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 22px;
+      opacity: 0; animation: fadeUp .9s ease .2s forwards;
+    }
+    .hero-name {
+      font-family: 'Cormorant', serif; font-weight: 700;
+      font-size: clamp(72px, 8.5vw, 136px);
+      line-height: .88; letter-spacing: -1px;
+      color: var(--cream);
+      opacity: 0; animation: fadeUp .9s ease .4s forwards;
+    }
+    .hero-name em {
+      font-style: italic; font-weight: 300;
+      color: var(--gold); display: block;
+    }
 
-/* scroll hint line */
-.scroll-hint-line {
-  background: linear-gradient(to bottom, var(--gold), transparent);
-}
+    .hero-divider {
+      width: 48px; height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin: 28px 0;
+      opacity: 0; animation: fadeUp .9s ease .6s forwards;
+    }
 
-/* ─── 5. MARQUEE ─── */
-.marquee {
-  background: var(--bg1);
-}
+    .hero-desc {
+      font-size: 16px; font-weight: 300; line-height: 1.8;
+      color: var(--warm); max-width: 400px;
+      opacity: 0; animation: fadeUp .9s ease .7s forwards;
+    }
 
-/* ─── 6. ABOUT ─── */
-.about {
-  background: #FFFFFF;       /* crisp white panel against parchment */
-}
-.about-quote {
-  color: var(--cream);
-  border-left-color: var(--gold);
-}
-.astat {
-  background: #FFFFFF;
-}
-.astat:hover {
-  background: var(--bg1);
-}
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 28px;
+      opacity: 0; animation: fadeUp .9s ease .85s forwards;
+    }
+    .htag {
+      font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      padding: 6px 14px;
+      border: 1px solid var(--faint);
+      color: var(--mid);
+      transition: border-color .3s, color .3s;
+    }
+    .htag:hover { border-color: var(--gold); color: var(--gold); }
+    .htag.lit { border-color: var(--gold); color: var(--gold); }
 
-/* ─── 7. MUSIC ─── */
-.music {
-  background: var(--bg1);
-}
-/* oversized bg word: very faint on light surface */
-.music-bg-word {
-  color: rgba(139,106,44,0.04);
-}
+    .hero-actions {
+      display: flex; gap: 20px; align-items: center;
+      margin-top: 40px;
+      opacity: 0; animation: fadeUp .9s ease 1s forwards;
+    }
+    .btn-gold {
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+      background: var(--gold); color: var(--bg);
+      padding: 15px 34px; text-decoration: none;
+      transition: background .3s, transform .2s;
+      display: inline-block;
+    }
+    .btn-gold:hover { background: var(--gold-lt); transform: translateY(-2px); }
+    .btn-ghost {
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--mid); text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: color .3s, border-color .3s;
+    }
+    .btn-ghost:hover { color: var(--cream); border-color: var(--cream); }
 
-/* ─── 8. THEATRE ─── */
-.theatre {
-  background: var(--bg);
-}
+    /* stat badge */
+    .hero-stat {
+      position: absolute; right: 52px; bottom: 72px; z-index: 10;
+      text-align: right;
+      opacity: 0; animation: fadeIn 1.2s ease 1.4s forwards;
+    }
+    .hstat-n {
+      font-family: 'Cormorant', serif; font-size: 80px;
+      font-weight: 700; line-height: 1; color: var(--cream);
+    }
+    .hstat-n span { color: var(--gold); }
+    .hstat-l {
+      font-family: 'Jost', sans-serif; font-size: 9px;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--mid);
+      margin-top: 2px;
+    }
 
-/* ─── 9. ACHIEVEMENTS ─── */
-.achieve {
-  background: var(--bg1);
-}
-.a-card {
-  background: var(--bg1);
-}
-.a-card:hover {
-  background: var(--bg2);
-}
-.a-title {
-  color: var(--cream);
-}
+    /* scroll hint */
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%); z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      opacity: 0; animation: fadeIn 2s ease 2s forwards;
+    }
+    .scroll-hint-line {
+      width: 1px; height: 52px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .scroll-hint-label {
+      font-family: 'Jost', sans-serif; font-size: 8px;
+      letter-spacing: 4px; text-transform: uppercase; color: var(--mid);
+      writing-mode: vertical-rl; transform: rotate(180deg);
+    }
 
-/* ─── 10. PHIL BRIDGE ─── */
-/* Gold panel stays gold — invert the text overlays */
-.pb-left {
-  background: var(--gold);
-}
-.pb-eyebrow {
-  color: rgba(246,243,238,0.55);
-}
-.pb-title {
-  color: #FFFFFF;
-}
-.pb-title em {
-  color: rgba(246,243,238,0.8);
-}
-.pb-text {
-  color: rgba(246,243,238,0.72);
-}
-.pb-overlay {
-  background:
-    linear-gradient(to right, var(--gold) 0%, transparent 28%),
-    linear-gradient(to top,   var(--bg)   0%, transparent 20%);
-}
+    /* ── MARQUEE ── */
+    .marquee {
+      background: var(--bg1);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 0; overflow: hidden;
+      display: flex;
+    }
+    .marquee-inner {
+      display: flex; white-space: nowrap;
+      animation: marqueeAnim 22s linear infinite;
+    }
+    .mi {
+      font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--mid); padding: 0 28px;
+    }
+    .mi-dot { color: var(--gold); }
 
-/* ─── 11. FOOTER ─── */
-/* Keep footer dark — it creates grounding contrast */
-footer {
-  background: #1C1A16;
-  color: var(--bg);
-}
-.footer-logo img {
-  filter: brightness(0) invert(1);
-  opacity: 0.65;
-}
-.footer-about {
-  color: rgba(246,243,238,0.45);
-}
-.footer-col-label {
-  color: var(--gold-lt);
-}
-.footer-links a {
-  color: rgba(246,243,238,0.45);
-}
-.footer-links a:hover {
-  color: var(--gold-lt);
-}
-.footer-copy,
-.footer-ig {
-  color: rgba(246,243,238,0.3);
-}
-.footer-ig:hover {
-  color: var(--gold-lt);
-}
+    /* ── SECTION HELPERS ── */
+    .s-eyebrow {
+      font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 5px; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 18px; display: block;
+    }
+    .s-title {
+      font-family: 'Cormorant', serif; font-weight: 700;
+      font-size: clamp(48px, 5.5vw, 84px);
+      line-height: .92; letter-spacing: -.5px;
+      color: var(--cream);
+    }
+    .s-title em { font-style: italic; font-weight: 300; color: var(--gold); }
 
-/* ─── 12. SONG LIST ─── */
-.song-title {
-  color: var(--cream);
-}
-.song::before {
-  background: var(--gold-dim);
-}
+    /* ── ABOUT ── */
+    .about {
+      padding: 140px 64px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 120px; align-items: start;
+      background: var(--bg);
+      position: relative;
+    }
+    .about::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+    .about-quote {
+      font-family: 'Cormorant', serif; font-size: 26px; font-style: italic;
+      font-weight: 300; line-height: 1.6; color: var(--cream);
+      border-left: 1px solid var(--gold); padding-left: 28px;
+      margin: 32px 0 48px;
+    }
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: var(--faint); margin-top: 8px;
+    }
+    .astat {
+      background: var(--bg1); padding: 28px 24px;
+      transition: background .3s;
+    }
+    .astat:hover { background: var(--bg2); }
+    .astat-n {
+      font-family: 'Cormorant', serif; font-size: 52px; font-weight: 700;
+      line-height: 1; color: var(--gold);
+    }
+    .astat-l {
+      font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--mid);
+      margin-top: 6px;
+    }
+    .about-text {
+      font-size: 16px; line-height: 1.9; color: var(--warm);
+      margin-bottom: 20px;
+    }
+    .about-text strong { color: var(--cream); font-weight: 400; }
 
-/* ─── 13. THEATRE ITEMS ─── */
-.t-show {
-  color: var(--cream);
-}
+    /* ── MUSIC ── */
+    .music {
+      background: var(--bg1);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 140px 64px;
+      position: relative; overflow: hidden;
+    }
+    .music-bg-word {
+      position: absolute; right: -30px; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cormorant', serif; font-size: 340px; font-weight: 700;
+      color: rgba(191,155,70,0.03); line-height: 1;
+      user-select: none; pointer-events: none; white-space: nowrap;
+    }
+    .music-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 100px; align-items: start; position: relative; z-index: 2;
+    }
+    .music-genres {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin: 28px 0 40px;
+    }
+    .genre-tag {
+      font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      border: 1px solid var(--faint); color: var(--mid);
+      padding: 7px 16px;
+      transition: border-color .3s, color .3s;
+    }
+    .genre-tag:hover { border-color: var(--gold); color: var(--gold-lt); }
+    .music-text { font-size: 16px; line-height: 1.9; color: var(--warm); margin-bottom: 20px; }
 
-/* ─── 14. CURSOR RING ─── */
-#cur-ring {
-  border-color: rgba(139,106,44,0.40);
-}
+    /* song list */
+    .song-list {}
+    .song {
+      display: grid; grid-template-columns: 32px 1fr auto;
+      gap: 20px; align-items: start;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--faint);
+      transition: background .2s;
+      position: relative;
+    }
+    .song::before {
+      content: ''; position: absolute; left: -16px; right: -16px; top: 0; bottom: 0;
+      background: var(--gold-dim); opacity: 0; transition: opacity .3s;
+      pointer-events: none;
+    }
+    .song:hover::before { opacity: 1; }
+    .song-n {
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      color: var(--gold); letter-spacing: 1px; padding-top: 3px;
+    }
+    .song-title {
+      font-family: 'Cormorant', serif; font-size: 18px; font-weight: 600;
+      color: var(--cream); line-height: 1.2;
+    }
+    .song-sub {
+      font-size: 12px; color: var(--mid); margin-top: 4px; line-height: 1.5;
+    }
+    .song-year {
+      font-family: 'Jost', sans-serif; font-size: 9px;
+      color: var(--mid); letter-spacing: 2px; padding-top: 4px;
+      white-space: nowrap;
+    }
 
-/* ─── 15. DOING MY BIT — additional overrides ─── */
+    /* ── THEATRE ── */
+    .theatre {
+      padding: 140px 64px;
+      background: var(--bg);
+    }
+    .theatre-grid {
+      display: grid; grid-template-columns: 340px 1fr;
+      gap: 100px; margin-top: 64px;
+    }
+    .theatre-intro {
+      font-size: 16px; line-height: 1.9; color: var(--warm);
+      position: sticky; top: 100px; align-self: start;
+    }
+    .theatre-intro strong { color: var(--cream); font-weight: 400; }
+    .theatre-intro .t-training {
+      margin-top: 32px; padding-top: 32px;
+      border-top: 1px solid var(--faint);
+      font-size: 12px; color: var(--mid); line-height: 1.8;
+    }
+    .t-item {
+      display: grid; grid-template-columns: 90px 1fr 60px;
+      gap: 24px; align-items: start;
+      padding: 22px 0; border-bottom: 1px solid var(--faint);
+      transition: padding-left .3s;
+    }
+    .t-item:hover { padding-left: 8px; }
+    .t-role {
+      font-family: 'Cormorant', serif; font-size: 16px;
+      font-style: italic; font-weight: 600;
+      color: var(--gold); padding-top: 2px;
+    }
+    .t-show { font-size: 15px; font-weight: 400; color: var(--cream); }
+    .t-venue { font-size: 12px; color: var(--mid); margin-top: 4px; }
+    .t-yr {
+      font-family: 'Jost', sans-serif; font-size: 10px;
+      color: var(--mid); letter-spacing: 2px; text-align: right; padding-top: 2px;
+    }
 
-/* hero overlay */
-.hero-overlay {
-  background:
-    linear-gradient(to right, var(--bg) 0%, transparent 32%),
-    linear-gradient(to top,   var(--bg) 0%, transparent 18%);
-}
+    /* ── ACHIEVEMENTS ── */
+    .achieve {
+      padding: 140px 64px;
+      background: var(--bg1);
+      border-top: 1px solid var(--line);
+    }
+    .achieve-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--faint);
+      margin-top: 64px;
+    }
+    .a-card {
+      background: var(--bg1); padding: 40px 32px;
+      transition: background .35s, transform .35s;
+      position: relative; overflow: hidden;
+      cursor: default;
+    }
+    .a-card::after {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0; width: 2px;
+      background: var(--gold);
+      transform: scaleY(0); transition: transform .4s; transform-origin: bottom;
+    }
+    .a-card:hover { background: var(--bg2); transform: translateY(-4px); }
+    .a-card:hover::after { transform: scaleY(1); }
+    .a-icon { font-size: 24px; margin-bottom: 18px; display: block; }
+    .a-title {
+      font-family: 'Cormorant', serif; font-size: 20px; font-weight: 600;
+      color: var(--cream); line-height: 1.2; margin-bottom: 10px;
+    }
+    .a-body { font-size: 13px; line-height: 1.7; color: var(--mid); }
+    .a-year {
+      font-family: 'Jost', sans-serif; font-size: 9px;
+      color: var(--gold); letter-spacing: 2px;
+      margin-top: 16px; display: block;
+    }
 
-/* quote band */
-.quote-band {
-  background: var(--bg1);
-}
-.qb-mark {
-  color: var(--gold);
-  opacity: 0.14;
-}
-.qb-text {
-  color: var(--cream);
-}
+    /* ── PHIL BRIDGE ── */
+    .phil-bridge {
+      display: grid; grid-template-columns: 1fr 1fr;
+      height: 680px; overflow: hidden;
+      position: relative;
+    }
+    .pb-left {
+      background: var(--gold);
+      padding: 80px 72px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      position: relative; z-index: 2;
+      clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+    }
+    .pb-eyebrow {
+      font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: rgba(8,8,7,0.45); margin-bottom: 18px;
+    }
+    .pb-title {
+      font-family: 'Cormorant', serif; font-weight: 700;
+      font-size: clamp(56px, 6vw, 96px);
+      line-height: .88; letter-spacing: -1px;
+      color: var(--bg);
+    }
+    .pb-title em { font-style: italic; font-weight: 300; display: block; }
+    .pb-text {
+      font-size: 17px; line-height: 1.75; color: rgba(8,8,7,0.6);
+      max-width: 420px; margin: 24px 0 36px;
+    }
+    .btn-dark {
+      font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+      background: var(--bg); color: var(--gold);
+      padding: 15px 34px; text-decoration: none;
+      display: inline-block; transition: transform .2s;
+    }
+    .btn-dark:hover { transform: translateY(-2px); }
+    .pb-stats { display: flex; gap: 40px; margin-top: 36px; }
+    .pbstat-n {
+      font-family: 'Cormorant', serif; font-size: 48px; font-weight: 700;
+      color: var(--bg); line-height: 1;
+    }
+    .pbstat-l {
+      font-family: 'Jost', sans-serif; font-size: 8px;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(8,8,7,0.45); margin-top: 4px;
+    }
+    .pb-right {
+      position: relative; overflow: hidden; background: var(--bg);
+    }
+    .pb-photo {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: 50% 14%;
+      display: block; opacity: .55;
+      filter: grayscale(30%);
+    }
+    .pb-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--gold) 0%, transparent 28%),
+                  linear-gradient(to top, var(--bg) 0%, transparent 20%);
+    }
 
-/* story sidebar */
-.story {
-  background: var(--bg);
-}
-.sb-nav a {
-  color: var(--mid);
-}
-.sb-nav li.on a {
-  color: var(--cream);
-  border-left-color: var(--gold);
-}
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg1);
+      border-top: 1px solid var(--line);
+      padding: 80px 64px 40px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 80px; padding-bottom: 64px;
+      border-bottom: 1px solid var(--faint);
+    }
+    .footer-logo img { height: 32px; filter: brightness(0) invert(1); opacity: .65; margin-bottom: 20px; }
+    .footer-about { font-size: 14px; line-height: 1.8; color: var(--mid); }
+    .footer-col-label {
+      font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 400;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px;
+    }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 12px; }
+    .footer-links a {
+      font-size: 14px; color: var(--mid); text-decoration: none;
+      transition: color .3s;
+    }
+    .footer-links a:hover { color: var(--gold-lt); }
+    .footer-bottom {
+      padding-top: 32px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy {
+      font-family: 'Jost', sans-serif; font-size: 10px;
+      letter-spacing: 2px; color: var(--mid);
+    }
+    .footer-ig {
+      font-family: 'Jost', sans-serif; font-size: 10px;
+      letter-spacing: 2px; color: var(--mid);
+      text-decoration: none; transition: color .3s;
+    }
+    .footer-ig:hover { color: var(--gold); }
 
-/* chapter text */
-.ch-title {
-  color: var(--cream);
-}
-.ch-text {
-  color: var(--warm);
-}
-.ch-text strong {
-  color: var(--cream);
-}
-.ch-pull {
-  border-left-color: var(--gold);
-}
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(32px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes pulse  { 0%,100% { opacity:.3; } 50% { opacity:1; } }
+    @keyframes marqueeAnim {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
 
-/* impact grid cards */
-.ig-card {
-  background: var(--bg1);
-}
-.ig-card:hover {
-  background: var(--bg2);
-}
-.ig-n {
-  color: var(--gold);
-}
+    .reveal {
+      opacity:0; transform:translateY(40px);
+      transition: opacity .9s ease, transform .9s ease;
+    }
+    .reveal.up { opacity:1; transform:translateY(0); }
+    .reveal-l {
+      opacity:0; transform:translateX(-40px);
+      transition: opacity .9s ease, transform .9s ease;
+    }
+    .reveal-l.up { opacity:1; transform:translateX(0); }
 
-/* timeline */
-.tl-dot {
-  background: var(--gold);
-}
-.tl-year {
-  color: var(--gold);
-}
-
-/* nav back arrow */
-.nav-back {
-  color: var(--mid);
-}
-.nav-back:hover {
-  color: var(--gold);
-}
-
-/* ─── 16. IMAGE TREATMENT ─── */
-/*
-   All <img> elements inside photo slots and hero panels
-   look richer with a subtle warm grade on a light background.
-   Add class="photo-warm" to any image for the effect.
-*/
-.photo-warm {
-  filter: sepia(8%) contrast(1.04) brightness(1.01) saturate(0.97);
-}
-.photo-bw {
-  filter: grayscale(100%) contrast(1.08) brightness(0.97);
-}
-
-/* ─── 17. SELECTION COLOUR ─── */
-::selection {
-  background: var(--gold);
-  color: #FFFFFF;
-}
-
-/*
- * ─── HOW TO USE ──────────────────────────────────────────
- *
- *  1. In index.html:
- *     Paste this entire block inside the existing <style>
- *     tag, right before the closing </style>. The cascade
- *     will override only the colour variables — all layout,
- *     spacing, typography, and animation rules stay intact.
- *
- *  2. In doingmybit.html:
- *     Same process — paste at the bottom of the <style> block.
- *
- *  3. To toggle dark/light at runtime:
- *     Wrap this entire block in:
- *       body.light { ... all rules above ... }
- *     Then add/remove class "light" on <body> via JS.
- *     This gives you a live dark/light mode switch.
- *
- *  4. Images:
- *     - Hero photo: works as-is (filter adjusted in rule 4)
- *     - About / phil-bridge photos: add class="photo-warm"
- *     - B&W editorial panels: add class="photo-bw"
- *
- *  5. The footer stays intentionally dark — it grounds the
- *     page and prevents the design from feeling too "airy."
- *     If you want a light footer, override rule 11.
- *
- * ─────────────────────────────────────────────────────────
- */
-'''
-
-with open('/tmp/yahn-light-theme.css', 'w') as f:
-    f.write(css)
-print(f"Written: {len(css):,} chars | {css.count(chr(10))} lines")
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav { padding: 0 28px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height:100svh; height:auto; }
+      .hero-content { padding: 100px 28px 64px; order:2; }
+      .hero-img-wrap { order:1; height:55vw; min-height:260px; }
+      .hero-vert { display:none; }
+      .about { grid-template-columns:1fr; padding:80px 28px; gap:56px; }
+      .music { padding:80px 28px; }
+      .music-layout { grid-template-columns:1fr; gap:56px; }
+      .theatre { padding:80px 28px; }
+      .theatre-grid { grid-template-columns:1fr; gap:48px; }
+      .theatre-intro { position:static; }
+      .achieve { padding:80px 28px; }
+      .achieve-grid { grid-template-columns:1fr 1fr; }
+      .phil-bridge { grid-template-columns:1fr; height:auto; }
+      .pb-left { clip-path:none; padding:64px 28px; }
+      .pb-right { height:50vw; min-height:260px; }
+      footer { padding:60px 28px 32px; }
+      .footer-top { grid-template-columns:1fr; gap:40px; }
+      .footer-bottom { flex-direction:column; gap:12px; text-align:center; }
+    }
   </style>
 </head>
 <body>
